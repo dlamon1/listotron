@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent;
+  /* optional: just make scrollbar invisible; */
+}
+.app::-webkit-scrollbar {
+  display: none;
+}
