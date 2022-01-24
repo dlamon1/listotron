@@ -67,7 +67,6 @@ export const ListComponent = observer((props) => {
   }, []);
 
   useEffect(() => {
-    // console.log('list change');
     setListTitles(vmix.lists);
     let files = list.createFileList();
     list.setFiles(files);
@@ -81,31 +80,38 @@ export const ListComponent = observer((props) => {
           justifyContent="space-between"
           style={{ background: '' }}
         >
-          <FormControl
-            variant="outlined"
-            size="small"
-            fullWidth
-            style={{ marginTop: 15 }}
+          <Grid
+            container
+            justifyContent="center"
+            // alignItems="center"
+            style={{ background: '' }}
           >
-            <InputLabel>Select List</InputLabel>
-            <Select
-              value={selectedListKey}
-              style={{ width: '100%' }}
-              onChange={handleListChange}
+            <FormControl
+              variant="outlined"
+              size="small"
+              // fullWidth
+              style={{ marginTop: 15, maxWidth: 450, minWidth: 200 }}
             >
-              {listTitles.map((list, index) => (
-                <MenuItem value={list.key} key={list.key}>
-                  {list.number}: {list.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              <InputLabel>Select List</InputLabel>
+              <Select
+                value={selectedListKey}
+                style={{ width: '100%' }}
+                onChange={handleListChange}
+              >
+                {listTitles.map((list, index) => (
+                  <MenuItem value={list.key} key={list.key}>
+                    {list.number}: {list.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
           <div
             id="dropzone"
             style={{
               marginTop: 10,
               width: '100%',
-              height: 'calc(100vh - 205px)',
+              height: 'calc(100vh - 245px)',
               borderStyle: 'solid',
               borderColor: 'darkorange',
               borderRadius: 10,
@@ -164,7 +170,7 @@ export const ListComponent = observer((props) => {
             <Button
               onClick={() => removeList()}
               variant="outlined"
-              style={{ width: '40%', marginTop: 10 }}
+              style={{ width: '60%', marginTop: 10 }}
             >
               Remove List
             </Button>

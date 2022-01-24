@@ -14,6 +14,10 @@ export const Ipc = observer(() => {
     vmix.connected();
   };
 
+  const newWindow = () => {
+    app.createWindow();
+  };
+
   // This will trigger vmix.lists to change
   const vmixDataRes = (__, domString) => {
     vmix.xmlDataRes(domString);
@@ -23,6 +27,7 @@ export const Ipc = observer(() => {
     window.api.on('app-isVmixConnected', isVmixConnected);
     window.api.on('vmix-connected', vmixConnected);
     window.api.on('vmix-xmlDataRes', vmixDataRes);
+    window.api.on('app-newWindow', newWindow);
 
     return () => {
       vmix.isSocketConnect && vmix.shutdown();

@@ -13,12 +13,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 export const Dashboard = observer(() => {
-  const { vmix, app, lists } = useContext(StoreContext);
+  const { vmix, lists } = useContext(StoreContext);
 
   let timeout = useRef();
 
-  const newWindow = () => {
-    // app.createWindow();
+  const newList = () => {
     lists.addList();
   };
 
@@ -33,6 +32,13 @@ export const Dashboard = observer(() => {
 
   return (
     <>
+      <Button
+        onClick={() => newList()}
+        variant="outlined"
+        style={{ width: '50%', marginTop: 10, borderColor: 'orange' }}
+      >
+        Add List
+      </Button>
       <Grid
         container
         justifyContent="space-around"
@@ -42,13 +48,6 @@ export const Dashboard = observer(() => {
           <ListComponent listIndex={i} key={i} />
         ))}
       </Grid>
-      {/* <Button
-        onClick={() => newWindow()}
-        variant="contained"
-        style={{ width: '100%', marginTop: 10 }}
-      >
-        New Window
-      </Button> */}
     </>
   );
 });
