@@ -21,17 +21,12 @@ const App = observer(() => {
         id="app"
         container
         style={{
-          backgroundColor: '#202020',
+          background: '#202020',
           overflow: 'hidden',
-          height: '100vh',
           width: '100vw',
         }}
-        direction="row"
         justifyContent="space-around"
-        alignItems="center"
       >
-        <Typography style={{ color: 'white' }}>hello{vmix.ip}</Typography>
-
         <Ipc />
         {!vmix.ip && <IpForm />}
         {vmix.ip && <Dashboard />}
