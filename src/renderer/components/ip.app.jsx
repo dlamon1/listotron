@@ -31,7 +31,7 @@ export const IpForm = observer(() => {
           alignItems="center"
           style={{ height: '100vh' }}
         >
-          <Box style={{ width: '85%', backgroundColor: '' }}>
+          <Box style={{ width: '85%', backgroundColor: '', maxWidth: 450 }}>
             <Grid container justifyContent="center" alignItems="center">
               <TextField
                 color="secondary"
