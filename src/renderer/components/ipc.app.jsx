@@ -6,18 +6,15 @@ import { StoreContext } from '../stores/store.context';
 export const Ipc = observer(() => {
   const { vmix, app } = useContext(StoreContext);
 
-  const isVmixConnected = (__, isVmixConnected, vmixIp) => {
-    console.log(isVmixConnected, vmixIp);
-    if (isVmixConnected) {
-      // vmix.setIsSocketConnected(boolean);
-      vmix.setIp(vmixIp);
-    }
+  const isVmixConnected = (__, isConnected, ip) => {
+    vmix.setIp(ip);
   };
 
   const vmixConnected = () => {
     vmix.connected();
   };
 
+  // This will trigger vmix.lists to change
   const vmixDataRes = (__, domString) => {
     vmix.xmlDataRes(domString);
   };

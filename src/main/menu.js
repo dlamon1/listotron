@@ -1,10 +1,4 @@
-import {
-  app,
-  Menu,
-  shell,
-  BrowserWindow,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, Menu, shell } from 'electron';
 
 export default class MenuBuilder {
   mainWindow;
@@ -226,15 +220,8 @@ export default class MenuBuilder {
           process.env.DEBUG_PROD === 'true'
             ? [
                 {
-                  label: 'Log',
-                  accelerator: 'Ctrl+R',
-                  click: (event) => {
-                    // console.log(event);
-                  },
-                },
-                {
                   label: '&Reload',
-                  // accelerator: 'Ctrl+R',
+                  accelerator: 'Ctrl+R',
                   click: () => {
                     this.mainWindow.webContents.reload();
                   },

@@ -11,13 +11,16 @@ contextBridge.exposeInMainWorld('api', {
     reqXml: () => {
       ipcRenderer.invoke('vmix-reqXml');
     },
+    postFunction: (cmd) => {
+      ipcRenderer.invoke('vmix-postFunction', cmd);
+    },
     shutdown: () => {
       ipcRenderer.invoke('vmix-shutdown');
     },
   },
   app: {
     createWindow: () => {
-      ipcRenderer.invoke('createWindow');
+      ipcRenderer.invoke('app-createWindow');
     },
   },
   on(eventName, callback) {

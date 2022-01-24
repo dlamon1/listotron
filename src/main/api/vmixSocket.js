@@ -1,33 +1,26 @@
 import net from 'net';
 import { ipcMain } from 'electron';
 
-export function vmixApi(
-  vmixEvent,
-  mainWindow,
-  windows,
-  connection,
-  isVmixConnected,
-  vmixIp
-) {
+export function vmixApi(vmixEvent, mainWindow, windows, connection, vmix) {
   let initConnectListener;
   let vmixPostReqListener;
   let vmixRequestXmlListener;
   let socketShutdownListener;
-  // let isVmixConnected = isVmixConnected;
-  // let vmixIp = vmixIp;
+  let requestXmlData;
+  let functionReqCount = 0;
 
-  const connect = (ip, isVmixConnected, vmixIp) => {
+  const connect = (ip) => {
     connection = net.connect(
       { port: 8099, host: ip },
       () => {
         console.log('connected to server!');
       },
       () => {
-        let data = { isVmixConnected: true, vmixIp: ip };
+        connection.write('SUBSCRIBE ACTS\r\n');
+        // console.log('one time connection res');
+        let data = { isConnected: true, ip: ip };
         vmixEvent.emit('connected', data);
-        console.log('one time connection res');
         mainWindow.webContents.send('vmix-connected');
-        // console.log(isVmixConnected, vmixIp);
       }
     );
 
@@ -40,23 +33,23 @@ export function vmixApi(
       handleError(e, connection);
     });
 
-    const requestXmlData = () => {
+    requestXmlData = () => {
       connection.write('XML\r\n');
     };
 
-    const vmixPostReq = (cmd) => {
+    const vmixPostFunction = (cmd) => {
       connection.write('FUNCTION ' + cmd + '\r\n');
     };
 
     vmixRequestXmlListener = () => {
       ipcMain.handle('vmix-reqXml', () => {
-        console.log('reqXml');
         requestXmlData();
       });
     };
     vmixPostReqListener = () => {
-      ipcMain.handle('vmix-PostReq', (__, cmd) => {
-        vmixPostReq(cmd);
+      ipcMain.handle('vmix-postFunction', (__, cmd) => {
+        vmixPostFunction(cmd);
+        functionReqCount = functionReqCount + 1;
       });
     };
     socketShutdownListener = () => {
@@ -66,25 +59,36 @@ export function vmixApi(
         requestShutdown();
       });
     };
+
     vmixPostReqListener();
     vmixRequestXmlListener();
     socketShutdownListener();
   };
 
+  let timeout = null;
+
   const handleRes = (data) => {
     const resType = data.split(' ')[0];
     console.log(resType);
+    // console.log(data);
     switch (resType) {
       case 'XML':
-        sendXmlToRender(data);
+        handleXmlRes(data);
         break;
       case 'FUNCTION':
+        clearTimeout(timeout);
+        timeout = setTimeout(requestXmlData, 150);
+        // requestXmlData();
+        break;
+      case 'ACTS':
+        // console.log(data);
+        break;
       default:
         break;
     }
   };
 
-  const sendXmlToRender = (data) => {
+  const handleXmlRes = (data) => {
     let vmixNodeString = data.split('<vmix>')[1];
     if (!vmixNodeString) {
       console.error('error parsing XML data: ', data);
@@ -93,7 +97,10 @@ export function vmixApi(
     let vmixNodeStringClean = vmixNodeString.replace(/(\r\n|\n|\r)/gm, '');
     let domString = `<xml><vmix>${vmixNodeStringClean}</xml>`;
 
-    mainWindow.webContents.send('vmix-xmlDataRes', domString);
+    windows.forEach((window) => {
+      window.webContents.send('vmix-xmlDataRes', domString);
+    });
+    vmix.setXmlString(domString);
   };
 
   const handleError = (e, connection) => {
@@ -117,7 +124,11 @@ export function vmixApi(
   };
 
   const requestShutdown = (connection) => {
-    connection && connection.end();
+    console.log('request shutdown');
+    if (window.length == 0 && connection) {
+      console.log('request shutdown check passed');
+      connection.end();
+    }
   };
 
   const removeIpcListeners = () => {
@@ -128,9 +139,9 @@ export function vmixApi(
   };
 
   initConnectListener = () => {
-    ipcMain.handleOnce('vmix-connect', async (__, ip) => {
+    ipcMain.handle('vmix-connect', async (__, ip) => {
       connection = null;
-      connect(ip, isVmixConnected, vmixIp);
+      connect(ip);
     });
   };
 

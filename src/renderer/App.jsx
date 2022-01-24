@@ -8,12 +8,13 @@ import { Ipc } from './components/ipc.app';
 import { Dashboard } from './pages/dashboard.app';
 
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import './app.css';
 
 const App = observer(() => {
-  const { vmix } = useContext(StoreContext);
+  const { vmix, lists } = useContext(StoreContext);
 
   return (
     <>
@@ -30,6 +31,22 @@ const App = observer(() => {
         <Ipc />
         {!vmix.ip && <IpForm />}
         {vmix.ip && <Dashboard />}
+        {lists.lists.length == 0 && (
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            style={{ width: '100%', height: '100vh', background: '' }}
+          >
+            <Button
+              variant="contained"
+              style={{ padding: 40 }}
+              onClick={() => lists.addList()}
+            >
+              Add List
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </>
   );

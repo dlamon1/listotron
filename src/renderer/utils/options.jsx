@@ -18,6 +18,7 @@
 // };
 
 export const options = {
+  textNodeName: '_text',
   attributeNamePrefix: '',
   attrNodeName: 'attr',
   ignoreAttributes: false,

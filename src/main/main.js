@@ -10,23 +10,22 @@ import { resolveHtmlPath } from './util';
 import { vmixApi } from './api/vmixSocket';
 import dotenv from 'dotenv';
 import EventEmitter from 'events';
+import { Vmix } from './vmixObject';
 
 dotenv.config();
 
 let windows = [];
-// let window;
 let isDev = false;
 let connection = null;
 let isMac = process.platform === 'darwin';
-let isVmixConnected = false;
-let vmixIp = '';
 let initialWindowCreated = false;
 
 const vmixEvent = new EventEmitter();
+const vmix = new Vmix(vmixEvent);
 
 const connected = (data) => {
-  vmixIp = data.vmixIp;
-  isVmixConnected = data.isVmixConnected;
+  vmix.setIsConnected(data.isConnected);
+  vmix.setIp(data.ip);
 };
 
 vmixEvent.on('connected', connected);
@@ -64,6 +63,7 @@ function createWindow() {
     width: 650,
     height: 900,
     minWidth: 333,
+    frame: true,
     x: 0,
     y: 0,
     show: false,
@@ -83,7 +83,10 @@ function createWindow() {
 
   window.once('ready-to-show', () => {
     window.webContents.send('app-version', app.getVersion());
-    window.webContents.send('app-isVmixConnected', isVmixConnected, vmixIp);
+    window.webContents.send('app-isVmixConnected', vmix.isConnected, vmix.ip);
+    window.webContents.send('vmix-xmlDataRes', vmix.xmlString);
+
+    isDev && window.webContents.openDevTools();
 
     if (!initialWindowCreated) {
       updater(isDev, window);
@@ -93,6 +96,9 @@ function createWindow() {
   });
 
   window.on('closed', function () {
+    console.log(window);
+    windows.pop();
+    console.log('closed window length: ', windows.length);
     window = null;
   });
 
@@ -103,23 +109,18 @@ function createWindow() {
   return window;
 }
 
-ipcMain.handle('createWindow', () => {
-  // let index = windows.length;
-  console.log('isDev: ', isDev);
-  console.log('isVmixConneted: ', isVmixConnected);
-  console.log('vmixIp: ', vmixIp);
+ipcMain.handle('app-createWindow', () => {
   let window = createWindow();
   const menuBuilder = new MenuBuilder(window, windows);
   menuBuilder.buildMenu();
-  window.webContents.send('app-isVmixConnected', isVmixConnected, vmixIp);
 });
 
 app.on('ready', () => {
   let window = createWindow();
   const menuBuilder = new MenuBuilder(window, windows);
   menuBuilder.buildMenu();
-  vmixApi(vmixEvent, window, windows, connection, isVmixConnected, vmixIp);
-  isDev && window.webContents.openDevTools();
+  window.webContents.send('app-version', app.getVersion());
+  vmixApi(vmixEvent, window, windows, connection, vmix);
 });
 
 app.on('window-all-closed', () => {
