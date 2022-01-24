@@ -89,13 +89,13 @@
     "publish": {
       "provider": "github",
       "owner": "dlamon1",
-      "repo": "listoron",
+      "repo": "listotron",
       "releaseType": "release"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dlamon1/listoron"
+    "url": "git+https://github.com/dlamon1/listotron"
   },
   "author": {
     "name": "LEAD LED, LLC",

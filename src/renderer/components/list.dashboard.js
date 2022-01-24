@@ -72,9 +72,27 @@ export const ListComponent = observer((props) => {
     list.setFiles(files);
   }, [JSON.stringify(vmix.lists)]);
 
+  useEffect(() => {
+    let w = Math.floor(99 / lists.lists.length);
+    let ws = `${w}%`;
+    setWidth(ws);
+    // console.log(w);
+  }, [lists.lists.length]);
+
+  const [width, setWidth] = useState('100%');
+
   return (
     <>
-      <Grid item style={{ flex: 1, marginLeft: 5, marginRight: 5 }}>
+      <Grid
+        item
+        style={{
+          paddingLeft: 5,
+          paddingRight: 5,
+          width: width,
+          background: '',
+          maxWidth: 400,
+        }}
+      >
         <Grid
           container
           justifyContent="space-between"
