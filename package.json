@@ -1,7 +1,7 @@
 {
-  "name": "clockotron",
-  "productName": "Clockotron",
-  "description": "Clockotron talks time directly to vMix text inputs",
+  "name": "listotron",
+  "productName": "Listotron",
+  "description": "Listotron is all the lists",
   "version": "0.1.0",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
@@ -35,8 +35,8 @@
     ]
   },
   "build": {
-    "productName": "Clockotron",
-    "appId": "org.erb.Clockotron",
+    "productName": "Listotron",
+    "appId": "org.erb.Listotron",
     "asar": false,
     "asarUnpack": "**\\*.{node,dll}",
     "icon": "assets/icon.icns",
@@ -89,13 +89,13 @@
     "publish": {
       "provider": "github",
       "owner": "dlamon1",
-      "repo": "clockotron",
+      "repo": "listoron",
       "releaseType": "release"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dlamon1/clockotron"
+    "url": "git+https://github.com/dlamon1/listoron"
   },
   "author": {
     "name": "LEAD LED, LLC",
