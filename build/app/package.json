@@ -1,7 +1,7 @@
 {
   "name": "listotron",
   "productName": "Listotron",
-  "version": "0.1.1",
+  "version": "0.1.2 ",
   "description": "Listotron talks time directly to vMix text inputs",
   "main": "./dist/main/main.js",
   "author": {

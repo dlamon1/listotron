@@ -2,7 +2,7 @@
   "name": "listotron",
   "productName": "Listotron",
   "description": "Listotron is all the lists",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
