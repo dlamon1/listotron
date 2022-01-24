@@ -4,7 +4,7 @@ Listotron shows multiple vmix lists simlulatiously. You can add and select files
 
 ## Installation
 
-==> Download an install file from the Releases tab, link: https://github.com/dlamon1/listoron/releases/
+==> Download an install file from the Releases tab, link: https://github.com/dlamon1/listotron/releases/
 
 or
 
