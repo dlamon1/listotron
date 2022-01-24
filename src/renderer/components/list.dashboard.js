@@ -62,6 +62,7 @@ export const ListComponent = observer((props) => {
       e.preventDefault();
 
       const files = e.dataTransfer.files;
+      console.log(files);
       vmix.handleDroppedFiles(files, list.key);
     });
   }, []);

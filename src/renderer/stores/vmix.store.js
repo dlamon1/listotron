@@ -38,7 +38,21 @@ export class Vmix {
   handleDroppedFiles(files, key) {
     let length = files.length;
     for (let i = 0; i < length; i++) {
-      this.postAddFileToListReq(files[i].path, key);
+      let isVideoImageOrAudio = this.checkFileType(files[i]);
+      if (isVideoImageOrAudio) {
+        this.postAddFileToListReq(files[i].path, key);
+      }
+    }
+  }
+
+  checkFileType(file) {
+    let acceptedTypes = ['audio', 'video', 'image'];
+    let type = file.type.split('/');
+    let i = acceptedTypes.includes(type[0]);
+    if (i) {
+      return true;
+    } else {
+      return false;
     }
   }
 

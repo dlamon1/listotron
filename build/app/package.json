@@ -1,8 +1,8 @@
 {
-  "name": "clockotron",
-  "productName": "Clockotron",
-  "version": "0.1.0",
-  "description": "Clockotron talks time directly to vMix text inputs",
+  "name": "listotron",
+  "productName": "Listotron",
+  "version": "0.1.1",
+  "description": "Listotron talks time directly to vMix text inputs",
   "main": "./dist/main/main.js",
   "author": {
     "name": "LEAD LED, LLC",
