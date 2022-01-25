@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 const ClockFormated = observer(() => {
-  const [version, sVersion] = useState('0.0.0');
+  const [version, sVersion] = useState(process.env.VERSION);
 
   const setVersion = (__, version) => {
     sVersion(version);
