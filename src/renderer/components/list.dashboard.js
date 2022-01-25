@@ -109,13 +109,14 @@ export const ListComponent = observer((props) => {
               variant="outlined"
               size="small"
               // fullWidth
-              style={{ marginTop: 15, maxWidth: 450, minWidth: 200 }}
+              style={{ marginTop: 15, width: "100%" }}
             >
               <InputLabel>Select List</InputLabel>
               <Select
                 value={selectedListKey}
-                style={{ width: '100%' }}
                 onChange={handleListChange}
+				label="Select List"
+				variant="outlined"
               >
                 {listTitles.map((list, index) => (
                   <MenuItem value={list.key} key={list.key}>
