@@ -7,6 +7,7 @@ export class Lists {
     this.alertState = alertState;
     this.vmix = vmix;
     makeAutoObservable(this);
+    this.addList(this.alertState, this.vmix);
   }
 
   addList() {

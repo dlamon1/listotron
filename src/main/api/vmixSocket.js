@@ -16,6 +16,9 @@ export function vmixApi(vmixEvent, mainWindow, windows, connection, vmix) {
         console.log('connected to server!');
       },
       () => {
+        vmixPostReqListener();
+        vmixRequestXmlListener();
+        socketShutdownListener();
         connection.write('SUBSCRIBE ACTS\r\n');
         // console.log('one time connection res');
         let data = { isConnected: true, ip: ip };
@@ -42,11 +45,13 @@ export function vmixApi(vmixEvent, mainWindow, windows, connection, vmix) {
     };
 
     vmixRequestXmlListener = () => {
+      console.log('running xml listener');
       ipcMain.handle('vmix-reqXml', () => {
         requestXmlData();
       });
     };
     vmixPostReqListener = () => {
+      console.log('running xml listener');
       ipcMain.handle('vmix-postFunction', (__, cmd) => {
         vmixPostFunction(cmd);
         functionReqCount = functionReqCount + 1;
@@ -59,10 +64,6 @@ export function vmixApi(vmixEvent, mainWindow, windows, connection, vmix) {
         requestShutdown();
       });
     };
-
-    vmixPostReqListener();
-    vmixRequestXmlListener();
-    socketShutdownListener();
   };
 
   let timeout = null;
@@ -104,14 +105,14 @@ export function vmixApi(vmixEvent, mainWindow, windows, connection, vmix) {
   };
 
   const handleError = (e, connection) => {
-    // console.log(e);
-    // console.log('----error----');
+    console.log('----error----');
     switch (e.code) {
       case 'EPIPE':
         requestShutdown(connection);
         removeIpcListeners();
         initConnectListener();
         mainWindow.webContents.send('socket-error', e.code);
+        mainWindow.webContents.send('vmix-disconnected');
         break;
       case 'ECONNREFUSED':
         requestShutdown(connection);
@@ -125,17 +126,30 @@ export function vmixApi(vmixEvent, mainWindow, windows, connection, vmix) {
 
   const requestShutdown = (connection) => {
     console.log('request shutdown');
-    if (window.length == 0 && connection) {
+    if (windows.length == 0 && connection) {
       console.log('request shutdown check passed');
       connection.end();
     }
   };
 
   const removeIpcListeners = () => {
+    if (
+      vmixPostReqListener == null &&
+      vmixRequestXmlListener == null &&
+      socketShutdownListener == null
+    )
+      return;
+    console.log('removing listeners');
     ipcMain.removeHandler('vmix-connect', initConnectListener);
     ipcMain.removeHandler('vmix-reqXml', vmixPostReqListener);
-    ipcMain.removeHandler('vmix-PostReq', vmixRequestXmlListener);
+    ipcMain.removeHandler('vmix-postFunction', vmixRequestXmlListener);
     ipcMain.removeHandler('socket-shutdown', socketShutdownListener);
+    // initConnectListener = null;
+    vmixPostReqListener = null;
+    vmixRequestXmlListener = null;
+    socketShutdownListener = null;
+
+    console.log(vmixRequestXmlListener, vmixPostReqListener);
   };
 
   initConnectListener = () => {

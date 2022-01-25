@@ -14,6 +14,10 @@ export const Ipc = observer(() => {
     vmix.connected();
   };
 
+  const vmixDisconnected = () => {
+    vmix.disconnected();
+  };
+
   const newWindow = () => {
     app.createWindow();
   };
@@ -26,6 +30,7 @@ export const Ipc = observer(() => {
   useEffect(() => {
     window.api.on('app-isVmixConnected', isVmixConnected);
     window.api.on('vmix-connected', vmixConnected);
+    window.api.on('vmix-disconnected', vmixDisconnected);
     window.api.on('vmix-xmlDataRes', vmixDataRes);
     window.api.on('app-newWindow', newWindow);
 

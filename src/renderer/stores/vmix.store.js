@@ -9,6 +9,7 @@ export class Vmix {
   connectionTimeout;
   alertStore;
   lists = [];
+  isAttemptingConnection = false;
 
   constructor(alertStore) {
     this.alertStore = alertStore;
@@ -118,6 +119,7 @@ export class Vmix {
   }
 
   attemptVmixConnection(ip) {
+    this.isAttemptingConnection = true;
     this.unconfirmedIp = ip;
     window.api.vmix.connect(ip);
     this.connectionTimeout = setTimeout(() => this.connectError(), 5000);
@@ -129,6 +131,14 @@ export class Vmix {
     clearTimeout(this.connectionTimeout);
     this.alertStore.connectionMadeToVmix();
     this.requestXml();
+    this.isAttemptingConnection = false;
+  }
+
+  disconnected() {
+    this.ip = '';
+    this.unconfirmedIp = '';
+    this.setIsSocketConnected = false;
+    this.alertStore.lostVmixConnection();
   }
 
   setIsSocketConnected(boolean) {
@@ -144,6 +154,7 @@ export class Vmix {
   }
 
   connectError() {
+    this.isAttemptingConnection = false;
     this.alertStore.cannotConnect();
   }
 

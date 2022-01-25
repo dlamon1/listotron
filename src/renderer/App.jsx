@@ -6,6 +6,7 @@ import { StoreContext } from './stores/store.context';
 import { IpForm } from './components/ip.app';
 import { Ipc } from './components/ipc.app';
 import { Dashboard } from './pages/dashboard.app';
+import { Toast } from './components/toast.app';
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -27,6 +28,7 @@ const App = observer(() => {
         }}
         justifyContent="space-around"
       >
+        <Toast />
         <Ipc />
         {!vmix.ip && <IpForm />}
         {vmix.ip && <Dashboard />}

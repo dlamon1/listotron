@@ -41,6 +41,7 @@ contextBridge.exposeInMainWorld('api', {
 messages = [
   'app-isVmixConnected',
   'vmix-connected',
+  'vmix-disconnected',
   'vmix-xmlDataRes',
   'version',
 ];

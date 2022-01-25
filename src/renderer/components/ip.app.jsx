@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Version from './version.app.jsx';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 import { StoreContext } from '../stores/store.context';
 
@@ -55,11 +56,14 @@ export const IpForm = observer(() => {
                 style={{
                   marginTop: 10,
                   marginBottom: 15,
-                  paddingLeft: 30,
-                  paddingRight: 30,
+                  width: 100,
                 }}
               >
-                Set
+                {vmix.isAttemptingConnection ? (
+                  <CircularProgress size={25} />
+                ) : (
+                  <Typography>Set</Typography>
+                )}
               </Button>
 
               <Version />

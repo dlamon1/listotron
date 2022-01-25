@@ -22,8 +22,6 @@ export const Dashboard = observer(() => {
   };
 
   useEffect(() => {
-    lists.addList();
-
     const refresh = () => {
       vmix.requestXml();
       timeout.current = setTimeout(refresh, 1500);
